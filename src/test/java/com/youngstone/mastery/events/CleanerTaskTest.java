@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.junit.jupiter.api.Test;
+import com.youngstone.mastery.events.Event;
 
 public class CleanerTaskTest {
 

@@ -3,6 +3,8 @@ package com.youngstone.mastery.events;
 import java.util.Date;
 import java.util.Deque;
 
+import com.youngstone.mastery.events.Event;
+
 public class CleanerTask extends Thread {
     private Deque<Event> deque;
 
@@ -13,10 +15,10 @@ public class CleanerTask extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            Date date = new Date();
-            clean(date);
-        }
+        // while (true) {
+        // Date date = new Date();
+        // clean(date);
+        // }
     }
 
     private void clean(Date date) {

@@ -9,28 +9,19 @@ import com.youngstone.mastery.sequence.Sequence;
 public class SequenceConfiguration {
     @Bean
     public Sequence sequence() {
-        var seqgen = new Sequence();
-        seqgen.setPrefix("30");
-        seqgen.setSuffix("A");
-        seqgen.setInitial(100000);
+        var seqgen = new Sequence("30", "A", "10000");
         return seqgen;
     }
 
     @Bean
     public Sequence sequenceTwo() {
-        var seqgen = new Sequence();
-        seqgen.setPrefix("2");
-        seqgen.setSuffix("A");
-        seqgen.setInitial(100000);
+        var seqgen = new Sequence("40", "B", "10000");
         return seqgen;
     }
 
     @Bean(name = "sequenceThree")
     public Sequence sequenceThree() {
-        var seqgen = new Sequence();
-        seqgen.setPrefix("2");
-        seqgen.setSuffix("A");
-        seqgen.setInitial(100000);
+        var seqgen = new Sequence("50", "C", "10000");
         return seqgen;
     }
 }
