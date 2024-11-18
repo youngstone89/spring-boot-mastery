@@ -1,6 +1,7 @@
 package com.youngstone.mastery.controller.example;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,9 +57,10 @@ public class ExceptionHandlerExampleController {
     }
 
     @ExceptionHandler({ CustomException1.class, CustomException2.class })
-    public void handleException(Exception ex) {
+    public ResponseEntity<String> handleExceptionLocallyInController(Exception ex) {
         log.error("handleException", ex);
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        return new ResponseEntity("Error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
 }

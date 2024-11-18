@@ -35,6 +35,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine
 	implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
 
+	// temporal workflow
+	implementation 'io.temporal:temporal-sdk:1.24.1'
+	testImplementation 'io.temporal:temporal-testing:1.24.1'
 
 }
 test {
