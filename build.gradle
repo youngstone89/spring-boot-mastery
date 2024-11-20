@@ -39,6 +39,9 @@ dependencies {
 	implementation 'io.temporal:temporal-sdk:1.24.1'
 	testImplementation 'io.temporal:temporal-testing:1.24.1'
 
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 test {
 	useJUnitPlatform()

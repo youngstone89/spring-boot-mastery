@@ -29,4 +29,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
 
     }
+
+    // @ExceptionHandler(value = { MethodArgumentNotValidException.class })
+    // public ResponseEntity<String>
+    // handleValidationException(MethodArgumentNotValidException ex) {
+    // String errors = ex.getBindingResult().getAllErrors()
+    // .stream()
+    // .map(ObjectError::getDefaultMessage)
+    // .collect(Collectors.joining(", "));
+    // return ResponseEntity.badRequest().body("Validation errors: " + errors);
+    // }
 }

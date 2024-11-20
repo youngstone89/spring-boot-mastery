@@ -43,4 +43,13 @@ public class ExceptionHandlerExampleControllerTest {
                 .andReturn();
 
     }
+
+    @Test
+    void shouldReturnConflict_whenTest7IsHit() throws Exception {
+        this.mockMvc.perform(get("/v1/exception-handle/example/test7"))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andReturn();
+
+    }
 }
