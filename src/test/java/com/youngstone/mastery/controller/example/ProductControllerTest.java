@@ -80,4 +80,26 @@ public class ProductControllerTest {
         // request content.","instance":"/v1/product/"}
 
     }
+
+    @Test
+    void testAddProduct_throwBadRequestException_onClassValidator() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonContent = mapper
+                .writeValueAsString(new ProductRequestV1("youngstone product1", "Electronics", "youngstone"));
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/v1/product/").contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+
+        Class<? extends Exception> exception = result.getResolvedException().getClass();
+        assertEquals(MethodArgumentNotValidException.class, exception);
+        MockHttpServletResponse response = result.getResponse();
+        String content = response.getContentAsString();
+        System.out.println(content);
+        // default message structure
+        // {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid
+        // request content.","instance":"/v1/product/"}
+
+    }
 }

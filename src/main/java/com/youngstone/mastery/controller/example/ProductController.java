@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/product")
 public class ProductController {
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<ProductResponseV1> addProduct(@Valid @RequestBody ProductRequestV1 request) {
 
         return new ResponseEntity<>(new ProductResponseV1(1), HttpStatus.CREATED);
