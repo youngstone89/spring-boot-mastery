@@ -26,80 +26,84 @@ import com.youngstone.mastery.model.ProductRequestV1;
 @AutoConfigureMockMvc
 public class ProductControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private ProductController productController;
+        @Autowired
+        private ProductController productController;
 
-    @Autowired
-    private GlobalExceptionHandler globalExceptionHandler;
+        @Autowired
+        private GlobalExceptionHandler globalExceptionHandler;
 
-    @BeforeEach
-    void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(productController)
-                .setControllerAdvice(globalExceptionHandler).build();
-    }
+        @BeforeEach
+        void setup() {
+                mockMvc = MockMvcBuilders.standaloneSetup(productController)
+                                .setControllerAdvice(globalExceptionHandler).build();
+        }
 
-    @Test
-    void contextLoads() {
-        assertNotNull(mockMvc);
-        assertNotNull(productController);
-        assertNotNull(globalExceptionHandler);
-    }
+        @Test
+        void contextLoads() {
+                assertNotNull(mockMvc);
+                assertNotNull(productController);
+                assertNotNull(globalExceptionHandler);
+        }
 
-    @Test
-    void testAddProduct() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(new ProductRequestV1("name", "category", "youngstone company"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/v1/product/").contentType(MediaType.APPLICATION_JSON)
-                .content(jsonContent))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-                .andDo(MockMvcResultHandlers.print());
-    }
+        @Test
+        void testAddProduct() throws Exception {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonContent = mapper
+                                .writeValueAsString(new ProductRequestV1("name", "category", "youngstone company"));
+                mockMvc.perform(MockMvcRequestBuilders.post("/v1/product/").contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonContent))
+                                .andExpect(MockMvcResultMatchers.status().isCreated())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                                .andDo(MockMvcResultHandlers.print());
+        }
 
-    @Test
-    void testAddProduct_throwBadRequestException() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(new ProductRequestV1(null, null, null));
-        MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("/v1/product/").contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andDo(MockMvcResultHandlers.print()).andReturn();
+        @Test
+        void testAddProduct_throwBadRequestException() throws Exception {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonContent = mapper.writeValueAsString(new ProductRequestV1("", "Electronics", "kys"));
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.post("/v1/product/")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(jsonContent))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                .andDo(MockMvcResultHandlers.print()).andReturn();
 
-        Class<? extends Exception> exception = result.getResolvedException().getClass();
-        assertEquals(MethodArgumentNotValidException.class, exception);
-        MockHttpServletResponse response = result.getResponse();
-        String content = response.getContentAsString();
-        System.out.println(content);
-        // default message structure
-        // {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid
-        // request content.","instance":"/v1/product/"}
+                Class<? extends Exception> exception = result.getResolvedException().getClass();
+                assertEquals(MethodArgumentNotValidException.class, exception);
+                MockHttpServletResponse response = result.getResponse();
+                String content = response.getContentAsString();
+                System.out.println(content);
+                // default message structure
+                // {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid
+                // request content.","instance":"/v1/product/"}
 
-    }
+        }
 
-    @Test
-    void testAddProduct_throwBadRequestException_onClassValidator() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper
-                .writeValueAsString(new ProductRequestV1("youngstone product1", "Electronics", "youngstone"));
-        MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("/v1/product/").contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andDo(MockMvcResultHandlers.print()).andReturn();
+        @Test
+        void testAddProduct_throwBadRequestException_onClassValidator() throws Exception {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonContent = mapper
+                                .writeValueAsString(new ProductRequestV1("", "Electronics",
+                                                "youngstone"));
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.post("/v1/product/")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(jsonContent))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                .andDo(MockMvcResultHandlers.print()).andReturn();
 
-        Class<? extends Exception> exception = result.getResolvedException().getClass();
-        assertEquals(MethodArgumentNotValidException.class, exception);
-        MockHttpServletResponse response = result.getResponse();
-        String content = response.getContentAsString();
-        System.out.println(content);
-        // default message structure
-        // {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid
-        // request content.","instance":"/v1/product/"}
+                Class<? extends Exception> exception = result.getResolvedException().getClass();
+                assertEquals(MethodArgumentNotValidException.class, exception);
+                MockHttpServletResponse response = result.getResponse();
+                String content = response.getContentAsString();
+                System.out.println(content);
+                // default message structure
+                // {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid
+                // request content.","instance":"/v1/product/"}
 
-    }
+        }
 }
