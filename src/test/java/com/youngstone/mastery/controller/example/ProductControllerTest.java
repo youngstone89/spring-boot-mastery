@@ -52,7 +52,8 @@ public class ProductControllerTest {
         void testAddProduct() throws Exception {
                 ObjectMapper mapper = new ObjectMapper();
                 String jsonContent = mapper
-                                .writeValueAsString(new ProductRequestV1("name", "category", "youngstone company"));
+                                .writeValueAsString(new ProductRequestV1("youngstone product", "Electronics",
+                                                "youngstone"));
                 mockMvc.perform(MockMvcRequestBuilders.post("/v1/product/").contentType(MediaType.APPLICATION_JSON)
                                 .content(jsonContent))
                                 .andExpect(MockMvcResultMatchers.status().isCreated())
