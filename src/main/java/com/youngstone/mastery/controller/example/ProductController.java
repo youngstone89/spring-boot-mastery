@@ -1,27 +1,44 @@
 package com.youngstone.mastery.controller.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.youngstone.mastery.model.ProductRequestV1;
 import com.youngstone.mastery.model.ProductResponseV1;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/v1/product")
+@Validated
 public class ProductController {
+
+    private static List<ProductResponseV1> products = new ArrayList<>();
 
     @PostMapping()
     public ResponseEntity<ProductResponseV1> addProduct(@Valid @RequestBody ProductRequestV1 request) {
 
-        return new ResponseEntity<>(new ProductResponseV1(1), HttpStatus.CREATED);
+        final var newProduct = new ProductResponseV1(products.size() + 1);
+        products.add(newProduct);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    }
+
+    @GetMapping()
+    public ResponseEntity<ProductResponseV1> getProduct(@RequestParam(name = "id") @Min(value = 0) Integer id) {
+        return new ResponseEntity<>(products.get(id), HttpStatus.OK);
     }
 
 }

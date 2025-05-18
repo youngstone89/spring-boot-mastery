@@ -14,9 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler extends RestResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler extends RestResponseEntityExceptionHandler {
             HttpStatusCode status,
             WebRequest request) {
 
+        Map<String, Object> body = getErrors(ex, status);
+
+        return new ResponseEntity<>(body, headers, status);
+    }
+
+    private Map<String, Object> getErrors(MethodArgumentNotValidException ex, HttpStatusCode status) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ISO_DATE_TIME));
         body.put("status", status.value());
@@ -36,8 +43,7 @@ public class GlobalExceptionHandler extends RestResponseEntityExceptionHandler {
                 .collect(Collectors.toList());
 
         body.put("errors", errors);
-
-        return new ResponseEntity<>(body, headers, status);
+        return body;
     }
 
 }
