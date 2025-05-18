@@ -26,19 +26,23 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 public class ProductController {
 
-    private static List<ProductResponseV1> products = new ArrayList<>();
+    // Use a mutable list for adding products
+    private static final List<ProductResponseV1> products = new ArrayList<>(List.of(
+            new ProductResponseV1(1), new ProductResponseV1(2)));
 
     @PostMapping()
     public ResponseEntity<ProductResponseV1> addProduct(@Valid @RequestBody ProductRequestV1 request) {
-
         final var newProduct = new ProductResponseV1(products.size() + 1);
         products.add(newProduct);
         return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
 
     @GetMapping()
-    public ResponseEntity<ProductResponseV1> getProduct(@RequestParam(name = "id") @Min(value = 0) Integer id) {
-        return new ResponseEntity<>(products.get(id), HttpStatus.OK);
+    public ResponseEntity<ProductResponseV1> getProduct(@RequestParam(name = "id") @Min(value = 1) Integer id) {
+        return products.stream()
+                .filter(x -> x.id().equals(id))
+                .findAny()
+                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
 }
